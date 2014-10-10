@@ -3,8 +3,13 @@
 ################################################################################
 ## Compression level: 1 - fast, 3,4 -optimal, 6 - slow,but stronger
 ##
+# This param should be setupped
+
+NOTIFICATION_ADDRESS=
+backuproot=""
+
+
 COMPRESSION="3"
-NOTIFICATION_ADDRESS=LinuxNotifications@intermedia.net
 ################################################################################
 
 export FAILED=0
@@ -12,17 +17,16 @@ export SUCCESS=0
 export TOTAL=0
 
 timestamp=`date "+%Y-%m-%d-%H-%M-%S"`
-hostname=`/bin/hostname | sed 's/\.intermedia.net\|\.serveronline.net//'`
+hostname=`/bin/hostname`
 
 logs="/var/log/backup"
 mkdir -p ${logs}
 
 logfile="${logs}/backup-${timestamp}.log"
 
-backuproot="/mnt/smb/backup/userdatabckp"
 temproot="/var/lib/backup"
 tempdir="${temproot}/${timestamp}"
-report='/tmp/imedia-mysqlbackups.lst'
+report='/tmp/mysqlbackups.lst'
 
 mkdir -p ${tempdir}
 
