@@ -19,11 +19,11 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv,"hs:u:p:m:",["server=","username=","password=","mailbox="])
     except getopt.GetoptError:
-        print 'delete_imap_msg.py -s <server> -u <username> -p <password> -m <mailbox>'
+        print ('delete_imap_msg.py -s <server> -u <username> -p <password> -m <mailbox>')
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print ("Not correct")
+            print ("delete_imap_msg.py -s <server> -u <username> -p <password> -m <mailbox>")
             sys.exit()
         elif opt in ("-s", "--server"):
             server = arg
