@@ -44,9 +44,10 @@ def _ip(s):
     return '.'.join(ip)
 
 def netstat(result):
-  PERIOD_OF_TIME = 10  
+  PERIOD_OF_TIME = 5  
   start = time.time()
   remote_hp = [] # Remote hp - host and port
+  host = []
   while True:
       content=_load()
       for line in content:
@@ -55,15 +56,17 @@ def netstat(result):
           r_host,r_port = _convert_ip_port(line_array[2])
           if l_host == '0.0.0.0' or r_host == '0.0.0.0':
               continue
- 	  else:
-	      if "r_host':'r_port" not in remote_hp:
-	           remote_hp.append("r_host':'r_port")
-	           nline = [l_host+':'+l_port + ' --- ' +r_host+':'+r_port]
-		   print(remote_hp)
+          else:
+              host = [r_host + ':' + r_port] 
+	      if host not in remote_hp:
+	          remote_hp.append(host)
+	          nline = [l_host+':'+l_port + ' --- ' +r_host+':'+r_port]
+#		  print(remote_hp)
+                  host = []
 	      else:
 	          continue
-      time.sleep(2)
-      result.append(nline)
+             # time.sleep(2)
+          result.append(nline)
 #      time.sleep(60)
       if time.time() > start + PERIOD_OF_TIME : break
   for i in range(len(result)):
