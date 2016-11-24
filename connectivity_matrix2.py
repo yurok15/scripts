@@ -43,8 +43,16 @@ def _ip(s):
     ip = [(_hex2dec(s[6:8])),(_hex2dec(s[4:6])),(_hex2dec(s[2:4])),(_hex2dec(s[0:2]))]
     return '.'.join(ip)
 
+def _net(host):
+    l = re.split(r'(\.|/)', host)
+    l = l[0:5]
+    p = ""
+    for i in l:
+        p += str(i)
+    return p
+
 def netstat(result):
-  PERIOD_OF_TIME = 5  
+  PERIOD_OF_TIME = 10800
   start = time.time()
   remote_hp = [] # Remote hp - host and port
   host = []
@@ -57,7 +65,7 @@ def netstat(result):
           if l_host == '0.0.0.0' or l_host == '127.0.0.1' or r_host == '0.0.0.0':
               continue
           else:
-              host = [l_host+':'+l_port + ' --- ' +r_host] 
+              host = [l_host+ ' --- ' + _net(r_host)] 
 	      if host not in remote_hp:
 	          remote_hp.append(host)
 	          nline = [l_host+':'+l_port + ' --- ' +r_host+':'+r_port]
@@ -67,7 +75,7 @@ def netstat(result):
 	          continue
              # time.sleep(2)
           result.append(nline)
-#      time.sleep(60)
+      time.sleep(60)
       if time.time() > start + PERIOD_OF_TIME : break
   for i in range(len(result)):
       print(result[i])  # Print result
