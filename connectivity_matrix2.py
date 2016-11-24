@@ -57,7 +57,7 @@ def netstat(result):
           if l_host == '0.0.0.0' or r_host == '0.0.0.0':
               continue
           else:
-              host = [r_host + ':' + r_port] 
+              host = [l_host+':'+l_port + ' --- ' +r_host] 
 	      if host not in remote_hp:
 	          remote_hp.append(host)
 	          nline = [l_host+':'+l_port + ' --- ' +r_host+':'+r_port]
