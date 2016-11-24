@@ -54,7 +54,7 @@ def netstat(result):
           line_array = _remove_empty(line.split(' '))
           l_host,l_port = _convert_ip_port(line_array[1]) # Convert ipaddress and port from hex to decimal.
           r_host,r_port = _convert_ip_port(line_array[2])
-          if l_host == '0.0.0.0' or r_host == '0.0.0.0':
+          if l_host == '0.0.0.0' or l_host == '127.0.0.1' or r_host == '0.0.0.0':
               continue
           else:
               host = [l_host+':'+l_port + ' --- ' +r_host] 
