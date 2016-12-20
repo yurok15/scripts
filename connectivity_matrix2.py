@@ -52,7 +52,7 @@ def _net(host):
     return p
 
 def netstat(result):
-  PERIOD_OF_TIME = 10800
+  PERIOD_OF_TIME = 10
   start = time.time()
   remote_hp = [] # Remote hp - host and port
   host = []
@@ -75,7 +75,7 @@ def netstat(result):
 	          continue
              # time.sleep(2)
           result.append(nline)
-      time.sleep(60)
+      time.sleep(1)
       if time.time() > start + PERIOD_OF_TIME : break
   for i in range(len(result)):
       print(result[i])  # Print result

@@ -1,5 +1,7 @@
 " enable syntax highlighting
 syntax enable
+colo slate
+highlight Comment ctermbg=DarkMagenta
 " show line numbers
 set number
 " set tabs to have 4 spaces
