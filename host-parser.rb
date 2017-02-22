@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
 
+# This script generates:
+# ansible inventory hosts
+# cssh hosts file
+
 #Get all hosts to string variable
 string = File.open('/home/yzhigulskiy/imhosts'){ |file| file.read }
 
