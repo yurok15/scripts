@@ -65,14 +65,14 @@ echo "Backing up /etc" >> ${logfile}
     eval ${command} >> ${logfile} 2>&1
 
 # Databases list
-#dblist=`mysql --user=local_backup --password=ZdravstvuiBackup -e 'SHOW DATABASES' | egrep -iv 'Database|information_schema'`
+#dblist=`mysql --user=local_backup --password= -e 'SHOW DATABASES' | egrep -iv 'Database|information_schema'`
 
 #declare -a BACKUP
 #declare -i index
 
 #index=1
 #for database in $dblist
-mysql --user=local_backup --password=ZdravstvuiBackup -e 'SHOW DATABASES' | egrep -iv '^information_schema$' | while read database
+mysql --user=local_backup --password= -e 'SHOW DATABASES' | egrep -iv '^information_schema$' | while read database
 do
     export TOTAL=$(($TOTAL+1))
     ctimestamp=`date "+%Y-%m-%d-%H-%M-%S"`
@@ -81,8 +81,8 @@ do
     
     echo "${ctimestamp}: backing up $database to temporary dir ${tempdir}" >> ${logfile}
 
-#    command="mysqldump -u local_backup --password=ZdravstvuiBackup --force \"$database\" --lock-tables --add-drop-table > ${backupdir}/$fdatabase-${ctimestamp}.sql"
-    command="mysqldump -u local_backup --password=ZdravstvuiBackup --force \"$database\" --lock-tables --add-drop-table > ${tempdir}/$fdatabase-${ctimestamp}.sql"
+#    command="mysqldump -u local_backup --password= --force \"$database\" --lock-tables --add-drop-table > ${backupdir}/$fdatabase-${ctimestamp}.sql"
+    command="mysqldump -u local_backup --password= --force \"$database\" --lock-tables --add-drop-table > ${tempdir}/$fdatabase-${ctimestamp}.sql"
 
     echo "Backing up ${database}" >> ${logfile} 2>&1
     echo "Command: $command" >> ${logfile}
