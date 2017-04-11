@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'fileutils'
 
 # This script generates:
 # ansible inventory hosts
@@ -39,10 +40,16 @@ array_of_hosts_and_assigned_types = assign_hosts_to_type(array_of_host_types, ar
 #puts array_of_hosts_and_assigned_types
 
 array_of_hosts_and_assigned_types.each do |key, value|
-  puts key, value
-  puts
+  FileUtils::mkdir_p "/var/tmp/inventory/" + key
+  dirname = key
+  new_file = File.open("/var/tmp/inventory/" << key << "/hosts", "w+")
+  new_file.puts("[#{key}]")
+  new_file.puts(value)
+  new_file.close
+
 end
 
+# FileUtils::mkdir_p '/var/tmp/bar'
 # 1 Generate ansible inventory
 # 2 Generate DC inventory
 # 3 Generate cssh host file
