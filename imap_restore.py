@@ -16,6 +16,7 @@ import os
 import shutil
 import sys, getopt
 from datetime import datetime
+import logging
 
 #CURRENT_DATE=datetime.now().strftime("%y-%m-%d-%H-%M-%S")
 from stat import *
@@ -27,23 +28,23 @@ global SOURCE_DIRECTORY
 SOURCE_DIRECTORY=""
 global DEST_DIRECTORY
 DEST_DIRECTORY=""
-RESTORE_DATE=".restore"+"_"+datetime.now().strftime("%d_%m_%Y")
-
-def main(argv):
-    SOURCE_DIRECTORY, DEST_DIRECTORY = check_arguments(argv)
+#RESTORE_DATE=".restore"+"_"+datetime.now().strftime("%d_%m_%Y")
+global RESTORE_DATE
+RESTORE_DATE=""
+def main(argv):    
+    SOURCE_DIRECTORY, DEST_DIRECTORY, RESTORE_DATE = check_arguments(argv)
     dest_dir=(DEST_DIRECTORY+"/"+RESTORE_DATE)
     os.mkdir(dest_dir)
 
     if check_directory_exist(SOURCE_DIRECTORY, DEST_DIRECTORY) is True:
-        list=os.listdir(SOURCE_DIRECTORY)
-        copy(list, SOURCE_DIRECTORY, DEST_DIRECTORY)
+        source_directory_file_list=os.listdir(SOURCE_DIRECTORY)
+        copy(source_directory_file_list, SOURCE_DIRECTORY, DEST_DIRECTORY, RESTORE_DATE)
     else:
         print("SOURCE or DESTINATION directory doesnt exist")
 
-def copy(list, SOURCE_DIRECTORY, DEST_DIRECTORY):
-    for i in list:
+def copy(source_directory_file_list, SOURCE_DIRECTORY, DEST_DIRECTORY, RESTORE_DATE):
+    for i in source_directory_file_list:
         source_dir=str(SOURCE_DIRECTORY+"/"+i)
-        print
         print(source_dir)
         mode=os.stat(source_dir).st_mode
         if S_ISDIR(mode):  # check source_dir is a directory
@@ -58,7 +59,7 @@ def copy(list, SOURCE_DIRECTORY, DEST_DIRECTORY):
             shutil.copyfile(source_dir, dest_dir)
 
 def check_arguments(argv):
-    myopts, args = getopt.getopt(sys.argv[1:],"s:d:h")
+    myopts, args = getopt.getopt(sys.argv[1:],"s:d:t:h")
     for o, a in myopts:
         if o == '-h':
             print("Usage: %s -s /source -d /destination" % sys.argv[0])
@@ -66,10 +67,12 @@ def check_arguments(argv):
             SOURCE_DIRECTORY=a
         elif o == '-d':
             DEST_DIRECTORY=a
+        elif o == '-t':
+            RESTORE_DATE=".restore"+"_"+a
         else:
-            print("Usage: %s -s input -d output" % sys.argv[0])
+            print("Usage: %s -s input -d output -t time" % sys.argv[0])
     #print ("Input file : %s and output file: %s" % (SOURCE_DIRECTORY,DEST_DIRECTORY) )
-    return(SOURCE_DIRECTORY, DEST_DIRECTORY)
+    return(SOURCE_DIRECTORY, DEST_DIRECTORY, RESTORE_DATE)
 
 def check_directory_exist(SOURCE_DIRECTORY, DEST_DIRECTORY):
     a=os.path.exists(SOURCE_DIRECTORY)
