@@ -33,6 +33,7 @@ def main(argv):
     SOURCE_DIRECTORY, DEST_DIRECTORY = check_arguments(argv)
     dest_dir=(DEST_DIRECTORY+"/"+RESTORE_DATE)
     os.mkdir(dest_dir)
+
     if check_directory_exist(SOURCE_DIRECTORY, DEST_DIRECTORY) is True:
         list=os.listdir(SOURCE_DIRECTORY)
         copy(list, SOURCE_DIRECTORY, DEST_DIRECTORY)
