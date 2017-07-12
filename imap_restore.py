@@ -31,7 +31,7 @@ DEST_DIRECTORY=""
 #RESTORE_DATE=".restore"+"_"+datetime.now().strftime("%d_%m_%Y")
 global RESTORE_DATE
 RESTORE_DATE=""
-def main(argv):    
+def main(argv):
     SOURCE_DIRECTORY, DEST_DIRECTORY, RESTORE_DATE = check_arguments(argv)
     dest_dir=(DEST_DIRECTORY+"/"+RESTORE_DATE)
     os.mkdir(dest_dir)
@@ -41,6 +41,7 @@ def main(argv):
         copy(source_directory_file_list, SOURCE_DIRECTORY, DEST_DIRECTORY, RESTORE_DATE)
     else:
         print("SOURCE or DESTINATION directory doesnt exist")
+
 
 def copy(source_directory_file_list, SOURCE_DIRECTORY, DEST_DIRECTORY, RESTORE_DATE):
     for i in source_directory_file_list:

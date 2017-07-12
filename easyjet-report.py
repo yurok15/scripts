@@ -27,23 +27,30 @@ REPORT_FILE="easyjet-report"
 REPORT_F="/var/tmp/easyjet_report"+"_"+datetime.now().strftime("%d_%m_%Y")
 
 def main():
+    #LDAP connection
     l = ldap.initialize("ldap://ldap.exch500.serverdata.net:389/")
     l.simple_bind_s("ADPostfixLDAPSvc@exch500.msoutlookonline.net", "vgy7gr39juhaejawe5hg534y45tgw45f")
     baseDN = "OU=easyJet,OU=Hosting,DC=exch500,DC=msoutlookonline,DC=net"
     searchScope = ldap.SCOPE_SUBTREE
-    retrieveAttributes=('displayName', 'cn', 'targetAddress', 'hostingADPostfixPOPEnabled', 'msExchHideFromAddressLists', 'hostingADPostfixForwardingAddresses', 'hostingADPostfixForwardingAddresses', 'hostingADPostfixTotalItemSize', 'hostingADPostfixTotalItemCount', 'lastLogonTimestamp', 'whenCreated', 'whenChanged')
+    retrieveAttributes=('displayName', 'cn', 'targetAddress', 'hostingADPostfixPOPEnabled', 'msExchHideFromAddressLists', 'hostingADPostfixForwardingAddresses', 'hostingADPostfixForwardingAddresses', 'hostingADPostfixTotalItemSize', 'hostingADPostfixTotalItemCount', 'lastLogonTimestamp', 'whenCreated', 'whenChanged', 'hostingMailfilterNextHop')
 
+    #Get LDAP user list
     ldap_user_list=get_ldap_user_list()
+
     dict_with_all_users={}
 
+
     for i in ldap_user_list:
+        # Prepare searchFilter. Users are getting with the following format:
+        # cn: Abigail.Lyons@easyJet but we need only Abigail.Lyons@easyJet
         searchFilter="CN"+"="+i[4:]
         logging.info(i[4:])
+        #Getting ldap data
         ldap_result = l.search(baseDN, searchScope, searchFilter, list(retrieveAttributes))
         result_set=[]
         result_set_new=[]
 
-        while 1:  # Getting data from LDAP
+        while 1:
             result_type, result_data = l.result(ldap_result, 0)
             if (result_data == []):
                 break
@@ -60,12 +67,16 @@ def main():
             continue
 
         total_val={}
+
+
         for key,value in result_set_new.items():  # Convert some timestamps to Human readable
             value=' '.join(value)
             if key == 'lastLogonTimestamp':
                 value=lastLogonTimestamp_converter(value)
             elif key == 'whenCreated' or key == 'whenChanged':
                 value=converter2(value)
+            elif key == 'hostingMailfilterNextHop':
+                value=value[5:]
             total_val[key]=value
 
         list_of_dict_values=[]
@@ -94,13 +105,16 @@ def get_ldap_user_list():
 def lastLogonTimestamp_converter(value):
     time=datetime.fromtimestamp((int(value)/10000000) - (((1970 - 1601) * 365 - 3 + round((1970 - 1601) / 4)) * 86400)).strftime('%Y-%m-%d %H:%M:%S')
     return(time)
+
 def converter2(value):
     time=value[:4]+'-'+value[4:6]+'-'+value[6:8]+' '+value[8:10]+':'+value[10:12]+':'+value[12:14]
     return(time)
+
 def report_generate(value):
     w = csv.writer(open(REPORT_F, "w"))
     for key, val in value.items():
-        w.writerow([str(val).replace("[","").replace("]","").replace("', '","|").replace("'", "")])
+        logging.info(val)
+        w.writerow([str(val).replace('"',"'").replace("[","").replace("]","").replace("', '","|").replace("'", "")])
 
 if __name__ == "__main__":
     main()
