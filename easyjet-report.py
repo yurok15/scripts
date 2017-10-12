@@ -36,9 +36,7 @@ def main():
 
     #Get LDAP user list
     ldap_user_list=get_ldap_user_list()
-
     dict_with_all_users={}
-
 
     for i in ldap_user_list:
         # Prepare searchFilter. Users are getting with the following format:
@@ -65,9 +63,7 @@ def main():
         except IndexError:
             logging.info("Exception")
             continue
-
         total_val={}
-
 
         for key,value in result_set_new.items():  # Convert some timestamps to Human readable
             value=' '.join(value)
