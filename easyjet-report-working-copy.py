@@ -24,7 +24,7 @@ REPORT_FILE="easyjet-report"
 REPORT_F="/var/tmp/easyjet_report"+"_"+datetime.now().strftime("%d_%m_%Y")
 user_list = []
 l = ldap.initialize("ldap://ldap.exch500.serverdata.net:389/")
-l.simple_bind_s("ADPostfixLDAPSvc@exch500.msoutlookonline.net", "vgy7gr39juhaejawe5hg534y45tgw45f")
+l.simple_bind_s("ADPostfixLDAPSvc@exch500.msoutlookonline.net", "")
 baseDN = "OU=easyJet,OU=Hosting,DC=exch500,DC=msoutlookonline,DC=net"
 searchScope = ldap.SCOPE_SUBTREE
 retrieveAttributes=('displayName', 'cn', 'targetAddress', 'hostingADPostfixPOPEnabled', 'msExchHideFromAddressLists', 'hostingADPostfixForwardingAddresses', 'hostingADPostfixForwardingAddresses', 'hostingADPostfixTotalItemSize', 'hostingADPostfixTotalItemCount', 'lastLogonTimestamp', 'whenCreated', 'whenChanged')
