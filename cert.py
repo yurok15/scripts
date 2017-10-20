@@ -39,8 +39,8 @@ cert = Certificate(args.pfx_path, args.pfx_passwd)
 
 #print(cert.get_pem().decode("utf8"))
 #print("".join(args.pfx_path.split('.')[:-1])+ "." + "cer")
-key_path = "".join(args.pfx_path.split(".")[:-1])+ "." + "key"
-cert_path = "".join(args.pfx_path.split(".")[:-1])+ "." + "crt"
+key_path = ".".join(args.pfx_path.split(".")[:-1])+ "." + "key"
+cert_path = ".".join(args.pfx_path.split(".")[:-1])+ "." + "crt"
 key = open(key_path, 'w')
 key.write(cert.get_key().decode("utf8"))
 key.close()
