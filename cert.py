@@ -36,14 +36,15 @@ class Certificate():
 
 
 cert = Certificate(args.pfx_path, args.pfx_passwd)
+#key_path = ".".join(args.pfx_path.split(".")[:-1])+ "." + "key"
+#cert_path = ".".join(args.pfx_path.split(".")[:-1])+ "." + "crt"
+#key = open(key_path, 'w')
+#key.write(cert.get_key().decode("utf8"))
+#key.close()
+#cer = open(cert_path, 'w')
+#cer.write(cert.get_cert().decode("utf8"))
+#cer.close()
 
-#print(cert.get_pem().decode("utf8"))
-#print("".join(args.pfx_path.split('.')[:-1])+ "." + "cer")
-key_path = ".".join(args.pfx_path.split(".")[:-1])+ "." + "key"
-cert_path = ".".join(args.pfx_path.split(".")[:-1])+ "." + "crt"
-key = open(key_path, 'w')
-key.write(cert.get_key().decode("utf8"))
-key.close()
-cer = open(cert_path, 'w')
-cer.write(cert.get_cert().decode("utf8"))
-cer.close()
+
+for i in "cert key pem"
+    print($i)
