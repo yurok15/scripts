@@ -47,4 +47,7 @@ cert = Certificate(args.pfx_path, args.pfx_passwd)
 
 
 for i in "cert key pem"
-    print($i)
+    path = ".".join(args.pfx_path.split(".")[:-1])+ "." + "$i"
+    file = open(path, 'w')
+    file.write(cert.get_$i().decode("utf8"))
+    #print($i)
