@@ -8,34 +8,42 @@
 # email: yurok15@gmail.com
 # github: yurok15@gmail.com
 # Created date: Dec 26, 2017
-# Last modified: Jan 04, 2018
+# Last modified: Jan 05, 2018
 # Tested with : Python 2.7
-# Script Revision: 0.5
+# Script Revision: 0.6
 # From revision 0.5 threading and statistics was added
 #
 ##########################################################
 
-from file_create_logic import *
-import socket
+
+
 from thread import start_new_thread
+import argparse
+import socket
+from file_create_logic import *
+
+parser = argparse.ArgumentParser(prog='obzvon')
+parser.add_argument('--number', dest='file_path', type=str, help='File with numbers')
+parser.add_argument('--start_time', dest='start_time', type=int, help='End Time')
+parser.add_argument('--end_time', dest='end_time', type=int, help='End Time')
+args = parser.parse_args()
+
+
+start_time = args.start_time
+end_time = args.end_time
+
+
+bad_numbers = 0
+good_numbers = 0
+data_list_len = []
+
 
 sock = socket.socket()
 sock.bind(('127.0.0.1', 9090))
 sock.listen(1)
 
-#start_time = 0
-#router_a = 0
-#ip = ''
-bad_numbers = 0
-good_numbers = 0
-data_list_len = []
-
-logging.basicConfig(format=u'%(filename)s[LINE:%(lineno)d]# %(levelname)-8s [%(asctime)s]  %(message)s', filename="obzvon.log", level=logging.INFO)
-
 
 def net_thread():
-    global good_numbers
-    global bad_numbers
     global data_list_len
     while True:
         conn, addr = sock.accept()
@@ -58,13 +66,13 @@ def main_job(data_list):
             bad_numbers += 1
             data_list.remove(data_list[0])
         else:
-            file_create_logic(data_list[0])
+            file_create_logic(data_list[0], start_time, end_time)
             good_numbers = good_numbers + 1
             data_list.remove(data_list[0])
 
 
 def main():
-    with open('test_numbers.txt') as file:
+    with open(args.file_path) as file:
         read_data = file.read()
     data_list = read_data.split()
     start_new_thread(net_thread, ())
